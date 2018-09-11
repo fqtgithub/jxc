@@ -12,3 +12,6 @@ spring:
 
   thymeleaf:
     cache: false
+    
+mybatis:
+  type-aliases-package: com.fqt.project.entity
