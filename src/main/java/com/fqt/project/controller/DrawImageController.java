@@ -29,7 +29,7 @@ public class DrawImageController {
 		setBorder(g);
 		drawRandomLine(g);
 		String random=drawRandomNum((Graphics2D)g);
-		request.setAttribute("yzm", "random");
+		request.getSession().setAttribute("yzmStr", random);
 		response.setContentType("image/jpeg");
 		response.setDateHeader("expries", -1);
 		response.setHeader("Cache-Control", "no-cache");
@@ -105,7 +105,6 @@ public class DrawImageController {
 			g.rotate(-degree * Math.PI / 180, x, 20);
 			x += 30;
 		}
-		
 		return sb.toString();
 	}
 }

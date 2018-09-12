@@ -14,7 +14,7 @@ import com.fqt.project.entity.User;
  */
 public interface UserMapper {
 
-	@Select("select id,username,password from t_user where username=#{user.userName} and password=#{user.password}")
+	@Select("select id,username,password from t_user where username=#{userName}")
 	@Results({
 		@Result(id=true,column="id",property="id"),
 		@Result(column="username",property="userName"),
@@ -23,5 +23,5 @@ public interface UserMapper {
 		many=@Many(select="com.fqt.project.mapper.RoleMapper.getUserRoles",fetchType=FetchType.LAZY)
 		)
 	})
-	User Login(User user);
+	User findUserByName(String userName);
 }

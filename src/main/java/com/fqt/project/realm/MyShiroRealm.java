@@ -31,8 +31,8 @@ public class MyShiroRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		// TODO Auto-generated method stub
-		User loginUser=(User) SecurityUtils.getSubject().getPrincipal();
-		User verifyUser=userService.Login(loginUser);
+		String userName=(String) SecurityUtils.getSubject().getPrincipal();
+		User verifyUser=userService.findUserByName(userName);
 		SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
 		List<Role> roles=verifyUser.getRoles();
 		Set<String> roleNames=new HashSet<String>();
@@ -50,10 +50,10 @@ public class MyShiroRealm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		// TODO Auto-generated method stub
-		User loginUser=(User) token.getPrincipal();
-		User verifyUser=userService.Login(loginUser);
+		String userName=(String) token.getPrincipal();
+		User verifyUser=userService.findUserByName(userName);
 		if (verifyUser!=null) {
-			AuthenticationInfo authcInfo=new SimpleAuthenticationInfo(verifyUser, verifyUser.getPassword(), "jxc");
+			AuthenticationInfo authcInfo=new SimpleAuthenticationInfo(verifyUser.getUserName(), verifyUser.getPassword(), "jxc");
 			return authcInfo;
 		} else {
 

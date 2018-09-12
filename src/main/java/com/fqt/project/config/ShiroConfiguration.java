@@ -10,30 +10,18 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 import com.fqt.project.realm.MyShiroRealm;
 
+@Configuration
 public class ShiroConfiguration {
-	
-	@Bean
-	public MyShiroRealm myShiroRealm() {
-		MyShiroRealm myShiroRealm=new MyShiroRealm();
-		return myShiroRealm;
-	}
-	
-	@Bean
-	public SecurityManager securityManager() {
-		DefaultWebSecurityManager dwsm=new DefaultWebSecurityManager();
-		dwsm.setRealm(myShiroRealm());
-		return dwsm;
-	}
-	
 	@Bean
 	public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
 		ShiroFilterFactoryBean shiroFilterFactoryBean=new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
-		shiroFilterFactoryBean.setLoginUrl("/jxc/login.html");
+		shiroFilterFactoryBean.setLoginUrl("/login.html");
 		
 		Map<String,String> filterChainDefinitionMap=new HashMap<String,String>();
 		
@@ -41,7 +29,8 @@ public class ShiroConfiguration {
 		 * 放过的请求路径
 		 */
 		filterChainDefinitionMap.put("/static/**", "anon");
-		filterChainDefinitionMap.put("/jxc/drawYzm", "anon");
+		filterChainDefinitionMap.put("/user/login", "anon");
+		filterChainDefinitionMap.put("/drawYzm", "anon");
 		
 		/**
 		 * 退出的请求路径
@@ -56,6 +45,19 @@ public class ShiroConfiguration {
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		
 		return shiroFilterFactoryBean;
+	}
+	
+	@Bean
+	public MyShiroRealm myShiroRealm() {
+		MyShiroRealm myShiroRealm=new MyShiroRealm();
+		return myShiroRealm;
+	}
+	
+	@Bean
+	public SecurityManager securityManager() {
+		DefaultWebSecurityManager securityManager=new DefaultWebSecurityManager();
+		securityManager.setRealm(myShiroRealm());
+		return securityManager;
 	}
 	
 	/**
