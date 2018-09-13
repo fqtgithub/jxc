@@ -7,4 +7,6 @@ import com.fqt.project.entity.Menu;
 public interface MenuService {
 
 	List<Menu> getRoleMenus(Integer roleid);
+	
+	List<Menu> getMenusByParentIdAndRoleId(Integer pid,Integer roleid);
 }

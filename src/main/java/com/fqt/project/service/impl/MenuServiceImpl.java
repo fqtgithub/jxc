@@ -19,4 +19,10 @@ public class MenuServiceImpl implements MenuService {
 		return menuMapper.getRoleMenus(roleid);
 	}
 
+	@Override
+	public List<Menu> getMenusByParentIdAndRoleId(Integer pid, Integer roleid) {
+		// TODO Auto-generated method stub
+		return menuMapper.getMenusByParentIdAndRoleId(pid, roleid);
+	}
+
 }
