@@ -88,6 +88,12 @@ public class UserController {
 		return currentUser.getUserName();
 	}
 	
+	/**
+	 * 加载用户菜单
+	 * @param session
+	 * @param pid
+	 * @return
+	 */
 	@RequestMapping("/loadingUserMenus")
 	@ResponseBody
 	public String loadingUserMenus(HttpSession session,Integer pid){
@@ -100,7 +106,6 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(str);
 		return str;
 	}
 	
@@ -143,5 +148,29 @@ public class UserController {
 			jsonArray.add(jsonObject);
 		}
 		return jsonArray;
+	}
+	
+	/**
+	 * 修改用户密码
+	 * @param password
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/updateUserPassword")
+	@ResponseBody
+	public Map<String,String> updateUserPassword(String newPassword,HttpSession session){
+		Map<String,String> map=new HashMap<String,String>();
+		User currentUser=(User) session.getAttribute("currentUser");
+		try {
+			userService.modifyUserPassword(currentUser.getId(), newPassword);
+			map.put("result", "success");
+			String dateTime=DateUtil.DatetoString(new Date());
+			Log log=new Log(currentUser.getUserName()+"修改了密码", dateTime, JxcConstant.UPDATE_ACTION, currentUser);
+			logService.insertLog(log);
+		} catch (Exception e) {
+			// TODO: handle exception
+			map.put("result", "error");
+		}
+		return map;
 	}
 }

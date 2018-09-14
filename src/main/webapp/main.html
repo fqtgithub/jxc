@@ -30,12 +30,12 @@
 		background: url("static/images/logo.png");
 	}
 	#user_do_div{
-		width:180px; 
+		width:100px; 
 		height:25px; 
 		margin-top: 45px;
 		font-size:12px;
 		color:white;
-		margin-left: 40px;
+		margin-left: 120px;
 	}
 	#user_do_div a{
 		color:white;
@@ -43,6 +43,12 @@
 	}
 	#user_do_div a:hover {
 		color:red;
+	}
+	.mdpSpan{
+		font-family: "楷体";
+	}
+	.mdpDiv{
+		margin-bottom: 15px;
 	}
 </style>
 <script type="text/javascript" src="static/jquery-easyui-1.6.3/jquery.min.js"></script>
@@ -70,10 +76,62 @@ $(document).ready(function(){
 		url:'user/loadingUserMenus?pid=-1',
 		onLoadSuccess:function(){
 			$("#tree").tree("expandAll");
+		},
+		onClick:function(node){
+			if(node.id==6040){
+				openModifyPasswordDialog();
+			}else if(node.id==6050){
+				logout();
+			}
 		}
 	});
+	
 });
-  
+function openModifyPasswordDialog(){
+	$("#modifyPasswordDialog").dialog("open").dialog("setTitle","修改密码");
+}
+function resetMdpDialogValue(){
+	$("#newPassword").val("");
+	$("#newPassword2").val("");
+}
+function modifyUserPassword(){
+	$("#mdpform").form("submit",
+		{
+		url:"user/updateUserPassword",
+		onSubmit:function(){
+			var isValid=$(this).form("validate");
+			if(!isValid){
+				return false;
+			}else{
+				var newPassword=$("#newPassword").val();
+				var newPassword2=$("#newPassword2").val();
+				if(newPassword!=newPassword2){
+					$.messager.alert("系统提示","两次密码输入不一致!");
+					return false;
+				}else{
+					return true;
+				}
+			}
+		},
+		success:function(data){
+			var data=eval("("+data+")");
+			if (data.result=="success") {
+				$.messager.alert("系统提示","操作成功,下一次登录有效!");
+				resetMdpDialogValue();
+				$("#modifyPasswordDialog").dialog("close");
+			}else{
+				$messager.alert("系统提示","操作失败,请联系管理员!");
+			}
+		}
+		});
+}
+function logout(){
+	$.messager.confirm('系统提示','你确定退出系统吗?',function(r){
+	    if (r){
+	    	window.location.href="logout";
+	    }
+	});
+}
 </script>
 </head>
 <body class="easyui-layout">
@@ -100,12 +158,6 @@ $(document).ready(function(){
 		</div>
 		<div id="top_right">
 			<div id="user_do_div">
-
-					<a href="#">
-						<img alt="" style="vertical-align: middle;" src="static/images/modifyPd.png">
-						账号管理
-					</a>
-					&nbsp;
 					<a href="#">
 						<img alt="" style="vertical-align: middle;" src="static/images/help.png">
 						帮助
@@ -118,12 +170,40 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
+	<div data-options="region:'west',title:'导航菜单',split:true," iconCls="icon-navigation" style="width:200px;">
+    	<ul id="tree" class="easyui-tree"></ul>
+    </div>
+    <div data-options="region:'center',title:' '" style="padding:5px;background:#eee;">
+    	<div id="tabs" class="easyui-tabs" fit="true" border="false"></div>
+    </div>
     <div data-options="region:'south'" style="height:25px;font-family: 楷体; text-align: center;">
     	Copyright&copy;2018-2020茂名拖鞋帮网络科技有限公司&nbsp;版权所有
     </div>
-    <div data-options="region:'west',title:'导航菜单',split:true," iconCls="icon-navigation" style="width:200px;">
-    	<ul id="tree" class="easyui-tree"></ul>
-    </div>
-    <div data-options="region:'center',title:' '" style="padding:5px;background:#eee;"></div>
+	<div id="modifyPasswordDialog" class="easyui-dialog" style="width:300px;hright:150px;" closed="true" buttons="#dlg-buttons" data-options="onClose:function(){resetMdpDialogValue()}">
+		<form id="mdpform" method="post">
+			<div class="mdpDiv">
+				<label>
+					<span class="mdpSpan">
+						新密码:
+					</span>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input id="newPassword" name="newPassword" type="password" class="easyui-validatebox" required="true">
+				</label>
+			</div>
+			<div class="mdpDiv">
+				<label>
+					<span class="mdpSpan">
+						确认新密码:
+					</span>
+					&nbsp;
+					<input id="newPassword2" name="newpassword2" type="password" class="easyui-validatebox" required="true">
+				</label>
+			</div>
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="javascript:modifyUserPassword();">保存</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-reset" onclick="javascript:resetMdpDialogValue();">重置</a>
+	</div>
 </body>
 </html>

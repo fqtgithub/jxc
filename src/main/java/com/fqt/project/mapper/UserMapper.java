@@ -1,9 +1,11 @@
 package com.fqt.project.mapper;
 
 import org.apache.ibatis.annotations.Many;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.FetchType;
 
 import com.fqt.project.entity.User;
@@ -24,4 +26,7 @@ public interface UserMapper {
 		)
 	})
 	User findUserByName(String userName);
+	
+	@Update("update t_user set password=#{password} where id=#{userid}")
+	void modifyUserPassword(@Param("userid")Integer userid,@Param("password") String password);
 }
