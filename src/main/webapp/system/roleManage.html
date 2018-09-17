@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/jxc/static/jquery-easyui-1.6.3/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/jxc/static/jquery-easyui-1.6.3/themes/icon.css">
+<style type="text/css">
+	body{
+		margin:1px 0px 0px 0px;
+	}
+</style>
+<script type="text/javascript" src="/jxc/static/jquery-easyui-1.6.3/jquery.min.js"></script>
+<script type="text/javascript" src="/jxc/static/jquery-easyui-1.6.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/jxc/static/jquery-easyui-1.6.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#roleSearchInput').searchbox({
+		    searcher:function(value,name){
+		    alert(value + "," + name)
+		    },
+		    menu:"#mm",
+		    prompt:'请输入角色名称'
+		});
+	});
+</script>
+</head>
+<body>
+			<table class="easyui-datagrid" fitColumns="true" pagination="true" rownumbers="true" singleSelect="true" url="/jxc/roleManager/getAllRoleInfos" fit="true" toolbar="#tb">
+				<thead>
+					<tr>
+						<th field="id" width="15%" align="center">编号</th>
+						<th field="name" width="35%" align="center">角色名称</th>
+						<th field="remarks" width="50%" align="center">备注</th>
+						
+					</tr>
+				</thead>
+			</table>
+	
+		<div id="tb">
+			<div id="roleDoDiv">
+				<a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" plain="true">添加</a>
+				<a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" plain="true">修改</a>
+				<a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" plain="true">删除</a>
+			</div>
+			<div id="roleSearchDiv">
+				<input id="roleSearchInput" style="width:300px;"></input>
+				<div id="mm" style="width:120px">
+				    <div data-options="name:'roleName'">角色名称</div>
+				</div>
+			</div>
+		</div>
+</body>
+</html>

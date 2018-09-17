@@ -82,6 +82,8 @@ $(document).ready(function(){
 				openModifyPasswordDialog();
 			}else if(node.id==6050){
 				logout();
+			}else if(node.attributes.url){
+				openTab(node);
 			}
 		}
 	});
@@ -132,6 +134,19 @@ function logout(){
 	    }
 	});
 }
+function openTab(node){
+	if ($("#tabs").tabs("exists",node.text)) {
+		$("#tabs").tabs("select",node.text);
+	} else {
+		var content="<iframe frameborder=0 scrolling='auto' style='width:100%;height:99%' src='"+node.attributes.url+"'></iframe>";
+		$("#tabs").tabs("add",{
+			title:node.text,
+			iconCls:node.iconCls,
+			closable:true,
+			content:content
+		});
+	}
+}
 </script>
 </head>
 <body class="easyui-layout">
@@ -173,7 +188,7 @@ function logout(){
 	<div data-options="region:'west',title:'导航菜单',split:true," iconCls="icon-navigation" style="width:200px;">
     	<ul id="tree" class="easyui-tree"></ul>
     </div>
-    <div data-options="region:'center',title:' '" style="padding:5px;background:#eee;">
+    <div data-options="region:'center'" style="padding:5px;background:#eee;">
     	<div id="tabs" class="easyui-tabs" fit="true" border="false"></div>
     </div>
     <div data-options="region:'south'" style="height:25px;font-family: 楷体; text-align: center;">
