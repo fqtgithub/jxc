@@ -23,15 +23,19 @@
 		    prompt:'请输入角色名称'
 		});
 	});
+	function formatEdit(val,row){
+		return "<a href=\"javascript:void(0)\"><img style='margin-top:4px' src='/jxc/static/images/edit.gif'/></a>";
+	}
 </script>
 </head>
 <body>
 			<table class="easyui-datagrid" fitColumns="true" pagination="true" rownumbers="true" singleSelect="true" url="/jxc/roleManager/getAllRoleInfos" fit="true" toolbar="#tb">
 				<thead>
 					<tr>
-						<th field="id" width="15%" align="center">编号</th>
-						<th field="name" width="35%" align="center">角色名称</th>
+						<th field="id" width="5%" align="center">编号</th>
+						<th field="name" width="25%" align="center">角色名称</th>
 						<th field="remarks" width="50%" align="center">备注</th>
+						<th field="aa" width="20%" align="center" formatter="formatEdit">权限菜单设置</th>
 						
 					</tr>
 				</thead>
