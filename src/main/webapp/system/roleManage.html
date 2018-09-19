@@ -24,7 +24,64 @@
 		});
 	});
 	function formatEdit(val,row){
-		return "<a href=\"javascript:void(0)\"><img style='margin-top:4px' src='/jxc/static/images/edit.gif'/></a>";
+		return "<a href=\"javascript:openRoleMenusDialog("+row.id+")\"><img style='margin-top:4px' src='/jxc/static/images/edit.gif'/></a>";
+	}
+	function commedCheckEvent(node){
+		var parentNode=$("#roleMenuTree").tree("getParent",node.target);
+		if (parentNode) {
+			var childrenNodes=$("#roleMenuTree").tree("getChildren",parentNode.target);
+			var flag=true;
+			for (var i = 0; i < childrenNodes.length; i++) {
+				var childrenNode=childrenNodes[i];
+				if(!childrenNode.checked){
+					flag=false;
+				}
+			}
+			if(!flag){
+				$("#roleMenuTree").tree("uncheck",parentNode.target);
+			}else{
+				$("#roleMenuTree").tree("check",parentNode.target);
+			}
+			
+		}
+	}
+	function commedCheckEventWithDoing(check,node){
+		var childrenNodes=$("#roleMenuTree").tree("getChildren",node.target);
+		if (childrenNodes.length>0) {
+			for (var i = 0; i < childrenNodes.length; i++) {
+				var childrenNode=childrenNodes[i];
+				$("#roleMenuTree").tree(check,childrenNode.target);
+			}
+			checkNode(childrenNode);
+		}
+	}
+	function checkNode(node){	
+		commedCheckEvent(node);
+		commedCheckEventWithDoing("check",node);
+	}
+	function unCheckNode(node){
+		commedCheckEvent(node);
+		commedCheckEventWithDoing("uncheck",node);
+	}
+	function openRoleMenusDialog(roleid){
+		$("#roleMenuDlg").dialog("open").dialog("setTitle","菜单权限设置");
+		$("#roleMenuTree").tree({
+			lines:true,
+			checkbox:true,
+			cascadeCheck:false,
+			url:"/jxc/roleManager/loadRoleMenuManageDialog?pid=-1&roleid="+roleid,
+			onLoadSuccess:function(){
+				$("#roleMenuTree").tree("expandAll");
+			},
+			onCheck:function(node,checked){
+				if(checked){
+					checkNode(node);
+				}else{
+					unCheckNode(node);
+				}
+			}
+		});
+		$("#roleid").val(roleid);
 	}
 </script>
 </head>
@@ -53,6 +110,16 @@
 				    <div data-options="name:'roleName'">角色名称</div>
 				</div>
 			</div>
+		</div>
+		
+		<div id="roleMenuDlg" class="easyui-dialog" style="width:300px;height:500px;" closed="true" buttons="">
+			<input type="hidden" id="roleid">
+			<ul class="easyui-tree" id="roleMenuTree"></ul>
+		</div>
+		
+		<div id="roleMenuDlgBtns">
+			<a href="#" class="easyui-linkbutton" iconCls="icon-save">保存</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-reset">重置</a>
 		</div>
 </body>
 </html>

@@ -5,6 +5,8 @@ import java.util.List;
 import com.fqt.project.entity.Role;
 
 public interface RoleService {
+	
+	List<Role> getUserRoles(Integer userid);
 
 	List<Role> getAllRoleInfosByPage(Integer start,Integer end);
 	

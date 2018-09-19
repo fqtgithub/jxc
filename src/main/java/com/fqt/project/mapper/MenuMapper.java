@@ -30,5 +30,13 @@ public interface MenuMapper {
 	 */
 	@Select("select * from t_menu where pid=#{pid} and id in(select menuid from t_role_menu where roleid=#{roleid})")
 	List<Menu> getMenusByParentIdAndRoleId(@Param("pid")Integer pid,@Param("roleid")Integer roleid);
+	
+	/**
+	 * 根据父节点id查询菜单
+	 * @param pid
+	 * @return
+	 */
+	@Select("select * from t_menu where pid=#{pid}")
+	List<Menu> getMenusByParentId(@Param("pid") Integer pid);
 
 }

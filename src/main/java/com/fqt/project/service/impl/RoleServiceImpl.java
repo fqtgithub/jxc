@@ -32,4 +32,10 @@ public class RoleServiceImpl implements RoleService {
 		return roleMapper.getAllRoleCount();
 	}
 
+	@Override
+	public List<Role> getUserRoles(Integer userid) {
+		// TODO Auto-generated method stub
+		return roleMapper.getUserRoles(userid);
+	}
+
 }

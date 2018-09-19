@@ -25,4 +25,10 @@ public class MenuServiceImpl implements MenuService {
 		return menuMapper.getMenusByParentIdAndRoleId(pid, roleid);
 	}
 
+	@Override
+	public List<Menu> getMenusByParentId(Integer pid) {
+		// TODO Auto-generated method stub
+		return menuMapper.getMenusByParentId(pid);
+	}
+
 }
