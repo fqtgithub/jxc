@@ -11,4 +11,6 @@ public interface RoleService {
 	List<Role> getAllRoleInfosByPage(Integer start,Integer end);
 	
 	Long getAllRoleCount();
+	
+	void updateRoleMenus(Integer roleid,int[] menuids);
 }

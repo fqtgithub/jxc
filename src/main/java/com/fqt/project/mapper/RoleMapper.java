@@ -2,6 +2,8 @@ package com.fqt.project.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -43,5 +45,20 @@ public interface RoleMapper {
 	 */
 	@Select("select count(id) from t_role")
 	Long getAllRoleCount();
+	
+	/**
+	 * 角色菜单关联操作
+	 * @param roleid
+	 * @param menuid
+	 */
+	@Insert("insert into t_role_menu(menuid,roleid) values(#{menuid},#{roleid})")
+	void insertRoleMenus(@Param("roleid") Integer roleid,@Param("menuid") Integer menuid);
+	
+	/**
+	 * 删除角色关联的菜单
+	 * @param roleid
+	 */
+	@Delete("delete from t_role_menu where roleid=#{roleid}")
+	void deleteRoleMenus(@Param("roleid") Integer roleid);
 
 }
